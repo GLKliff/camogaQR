@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Commessa CAMOGA</title>
+  <style>
+    body { font-family: Arial; background: #f0f2f5; padding: 20px; }
+    .etichetta { background: #fff; padding: 20px; max-width: 350px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #1e3a5f; }
+    .campo { margin-bottom: 12px; font-size: 16px; }
+    .qr, .barcode { text-align: center; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="etichetta">
+    <h2>Commessa CAMOGA</h2>
+    <div class="campo"><strong>Numero Ordine:</strong> <span id="ordine">--</span></div>
+    <div class="campo"><strong>Materiale:</strong> <span id="materiale">--</span></div>
+    <div class="campo"><strong>Data:</strong> <span id="timestamp">--</span></div>
+    <div class="qr">
+      <img id="qr" src="" alt="QR Code">
+    </div>
+    <div class="barcode">
+      <img id="barcode" src="" alt="Barcode">
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const ordine = params.get("ordine") || "8001005";
+    const materiale = params.get("materiale") || "Acciaio Inox AISI 304";
+
+    const now = new Date();
+    const timestamp = now.toLocaleString('it-IT');
+
+    document.getElementById("ordine").textContent = ordine;
+    document.getElementById("materiale").textContent = materiale;
+    document.getElementById("timestamp").textContent = timestamp;
+
+    document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://camoga.it/commessa?ordine=${ordine}`;
+    document.getElementById("barcode").src = `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
+  </script>
+</body>
+</html>
