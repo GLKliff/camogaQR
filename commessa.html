@@ -29,6 +29,7 @@
     const params = new URLSearchParams(window.location.search);
     const ordine = params.get("ordine") || "8001005";
     const materiale = params.get("materiale") || "Acciaio Inox AISI 304";
+    const encodedMateriale = encodeURIComponent(materiale);
 
     const now = new Date();
     const timestamp = now.toLocaleString('it-IT');
@@ -37,7 +38,10 @@
     document.getElementById("materiale").textContent = materiale;
     document.getElementById("timestamp").textContent = timestamp;
 
-    document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://camoga.it/commessa?ordine=${ordine}`;
+    const baseUrl = "https://glkliff.github.io/camogaQR/commessa.html";
+    const qrLink = `${baseUrl}?ordine=${ordine}&materiale=${encodedMateriale}`;
+
+    document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrLink)}`;
     document.getElementById("barcode").src = `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
   </script>
 </body>
