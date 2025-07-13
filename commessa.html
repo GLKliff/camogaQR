@@ -3,64 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <title>Commessa CAMOGA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
-      height: 100%;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
       background: #f0f2f5;
+      font-family: Arial, sans-serif;
+    }
+
+    .contenitore {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
 
     .etichetta {
       background: #fff;
-      padding: 25px;
-      max-width: 400px;
-      width: 90%;
+      padding: 30px;
+      width: 100%;
+      max-width: 420px;
       border-radius: 12px;
       box-shadow: 0 0 12px rgba(0,0,0,0.15);
-      font-size: 18px;
+      font-size: 20px;
     }
 
     h2 {
       text-align: center;
       color: #1e3a5f;
-      font-size: 22px;
+      font-size: 24px;
       margin-bottom: 20px;
     }
 
     .campo {
-      margin-bottom: 14px;
-      line-height: 1.4em;
+      margin-bottom: 16px;
+      line-height: 1.5em;
     }
 
     .qr img, .barcode img {
       width: 100%;
-      max-width: 220px;
+      max-width: 240px;
       height: auto;
     }
 
     .qr, .barcode {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 25px;
     }
   </style>
 </head>
 <body>
-  <div class="etichetta">
-    <h2>Commessa CAMOGA</h2>
-    <div class="campo"><strong>Numero Ordine:</strong> <span id="ordine">--</span></div>
-    <div class="campo"><strong>Materiale:</strong> <span id="materiale">--</span></div>
-    <div class="campo"><strong>Pezzi:</strong> <span id="pezzi">--</span></div>
-    <div class="campo"><strong>Data:</strong> <span id="timestamp">--</span></div>
-    <div class="qr">
-      <img id="qr" src="" alt="QR Code">
-    </div>
-    <div class="barcode">
-      <img id="barcode" src="" alt="Barcode">
+  <div class="contenitore">
+    <div class="etichetta">
+      <h2>Commessa CAMOGA</h2>
+      <div class="campo"><strong>Numero Ordine:</strong> <span id="ordine">--</span></div>
+      <div class="campo"><strong>Materiale:</strong> <span id="materiale">--</span></div>
+      <div class="campo"><strong>Pezzi:</strong> <span id="pezzi">--</span></div>
+      <div class="campo"><strong>Data:</strong> <span id="timestamp">--</span></div>
+      <div class="qr">
+        <img id="qr" src="" alt="QR Code">
+      </div>
+      <div class="barcode">
+        <img id="barcode" src="" alt="Barcode">
+      </div>
     </div>
   </div>
 
