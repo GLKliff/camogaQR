@@ -4,11 +4,49 @@
   <meta charset="UTF-8">
   <title>Commessa CAMOGA</title>
   <style>
-    body { font-family: Arial; background: #f0f2f5; padding: 20px; }
-    .etichetta { background: #fff; padding: 20px; max-width: 350px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h2 { text-align: center; color: #1e3a5f; }
-    .campo { margin-bottom: 12px; font-size: 16px; }
-    .qr, .barcode { text-align: center; margin-top: 15px; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .etichetta {
+      background: #fff;
+      padding: 25px;
+      max-width: 400px;
+      width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+      font-size: 18px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e3a5f;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .campo {
+      margin-bottom: 14px;
+      line-height: 1.4em;
+    }
+
+    .qr img, .barcode img {
+      width: 100%;
+      max-width: 220px;
+      height: auto;
+    }
+
+    .qr, .barcode {
+      text-align: center;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -38,13 +76,11 @@
     const now = new Date();
     const timestamp = now.toLocaleString('it-IT');
 
-    // Visualizzazione nei campi HTML
     document.getElementById("ordine").textContent = ordine;
     document.getElementById("materiale").textContent = materiale;
     document.getElementById("pezzi").textContent = pezzi;
     document.getElementById("timestamp").textContent = timestamp;
 
-    // Generazione QR con tutti i parametri
     const baseUrl = "https://glkliff.github.io/camogaQR/commessa.html";
     const qrLink = `${baseUrl}?ordine=${ordine}&materiale=${encodedMateriale}&pezzi=${encodedPezzi}`;
 
