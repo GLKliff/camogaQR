@@ -38,18 +38,21 @@
     const now = new Date();
     const timestamp = now.toLocaleString('it-IT');
 
-    // Visualizzazione nei campi della pagina
+    // Visualizzazione nei campi HTML
     document.getElementById("ordine").textContent = ordine;
     document.getElementById("materiale").textContent = materiale;
     document.getElementById("pezzi").textContent = pezzi;
     document.getElementById("timestamp").textContent = timestamp;
 
-    // Generazione del link QR con anche pezzi
+    // Generazione QR con tutti i parametri
     const baseUrl = "https://glkliff.github.io/camogaQR/commessa.html";
     const qrLink = `${baseUrl}?ordine=${ordine}&materiale=${encodedMateriale}&pezzi=${encodedPezzi}`;
 
-    document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrLink)}`;
-    document.getElementById("barcode").src = `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
+    document.getElementById("qr").src =
+      `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrLink)}`;
+
+    document.getElementById("barcode").src =
+      `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
   </script>
 </body>
 </html>
