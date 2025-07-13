@@ -5,46 +5,49 @@
   <title>Commessa CAMOGA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
-      padding: 40px 15px;
-      background: #f0f2f5;
       font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
     .etichetta {
       background: #fff;
-      padding: 20px;
-      margin: 30px auto;
-      max-width: 300px;          /* 🔽 ridotta per telefoni */
-      width: 95%;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.12);
-      font-size: 16px;           /* 🔠 più contenuto */
+      padding: 30px;
+      max-width: 420px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+      font-size: 20px;
     }
 
     h2 {
       text-align: center;
       color: #1e3a5f;
-      font-size: 20px;
-      margin-bottom: 15px;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
 
     .campo {
-      margin-bottom: 12px;
-      line-height: 1.4em;
+      margin-bottom: 16px;
+      line-height: 1.5em;
     }
 
     .qr img, .barcode img {
       width: 100%;
-      max-width: 130px;          /* 🧾 immagini più piccole */
+      max-width: 240px;
       height: auto;
       touch-action: manipulation;
     }
 
     .qr, .barcode {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 25px;
     }
   </style>
 </head>
