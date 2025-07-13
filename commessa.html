@@ -16,6 +16,7 @@
     <h2>Commessa CAMOGA</h2>
     <div class="campo"><strong>Numero Ordine:</strong> <span id="ordine">--</span></div>
     <div class="campo"><strong>Materiale:</strong> <span id="materiale">--</span></div>
+    <div class="campo"><strong>Pezzi:</strong> <span id="pezzi">--</span></div>
     <div class="campo"><strong>Data:</strong> <span id="timestamp">--</span></div>
     <div class="qr">
       <img id="qr" src="" alt="QR Code">
@@ -29,17 +30,23 @@
     const params = new URLSearchParams(window.location.search);
     const ordine = params.get("ordine") || "8001005";
     const materiale = params.get("materiale") || "Acciaio Inox AISI 304";
+    const pezzi = params.get("pezzi") || "--";
+
     const encodedMateriale = encodeURIComponent(materiale);
+    const encodedPezzi = encodeURIComponent(pezzi);
 
     const now = new Date();
     const timestamp = now.toLocaleString('it-IT');
 
+    // Visualizzazione nei campi della pagina
     document.getElementById("ordine").textContent = ordine;
     document.getElementById("materiale").textContent = materiale;
+    document.getElementById("pezzi").textContent = pezzi;
     document.getElementById("timestamp").textContent = timestamp;
 
+    // Generazione del link QR con anche pezzi
     const baseUrl = "https://glkliff.github.io/camogaQR/commessa.html";
-    const qrLink = `${baseUrl}?ordine=${ordine}&materiale=${encodedMateriale}`;
+    const qrLink = `${baseUrl}?ordine=${ordine}&materiale=${encodedMateriale}&pezzi=${encodedPezzi}`;
 
     document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrLink)}`;
     document.getElementById("barcode").src = `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
