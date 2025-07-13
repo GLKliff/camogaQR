@@ -5,27 +5,19 @@
   <title>Commessa CAMOGA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      background: #f0f2f5;
+      padding: 50px 20px 60px; /* ↕ spazio in alto e in basso */
       font-family: Arial, sans-serif;
-    }
-
-    .contenitore {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      background: #f0f2f5;
     }
 
     .etichetta {
       background: #fff;
       padding: 30px;
-      width: 100%;
+      margin-top: 40px; /* ↘ spinta verso il centro verticale */
       max-width: 420px;
+      width: 100%;
       border-radius: 12px;
       box-shadow: 0 0 12px rgba(0,0,0,0.15);
       font-size: 20px;
@@ -47,6 +39,7 @@
       width: 100%;
       max-width: 240px;
       height: auto;
+      touch-action: manipulation; /* 🔒 previene gesture strane su mobile */
     }
 
     .qr, .barcode {
@@ -56,19 +49,17 @@
   </style>
 </head>
 <body>
-  <div class="contenitore">
-    <div class="etichetta">
-      <h2>Commessa CAMOGA</h2>
-      <div class="campo"><strong>Numero Ordine:</strong> <span id="ordine">--</span></div>
-      <div class="campo"><strong>Materiale:</strong> <span id="materiale">--</span></div>
-      <div class="campo"><strong>Pezzi:</strong> <span id="pezzi">--</span></div>
-      <div class="campo"><strong>Data:</strong> <span id="timestamp">--</span></div>
-      <div class="qr">
-        <img id="qr" src="" alt="QR Code">
-      </div>
-      <div class="barcode">
-        <img id="barcode" src="" alt="Barcode">
-      </div>
+  <div class="etichetta">
+    <h2>Commessa CAMOGA</h2>
+    <div class="campo"><strong>Numero Ordine:</strong> <span id="ordine">--</span></div>
+    <div class="campo"><strong>Materiale:</strong> <span id="materiale">--</span></div>
+    <div class="campo"><strong>Pezzi:</strong> <span id="pezzi">--</span></div>
+    <div class="campo"><strong>Data:</strong> <span id="timestamp">--</span></div>
+    <div class="qr">
+      <img id="qr" src="" alt="QR Code">
+    </div>
+    <div class="barcode">
+      <img id="barcode" src="" alt="Barcode">
     </div>
   </div>
 
