@@ -1,20 +1,43 @@
-[
-  {
-    "ordine": "8001005",
-    "materiale": "Acciaio Inox AISI 304",
-    "pezzi": "50",
-    "utente": "Gabriele",
-    "dataInizio": "2025-07-18",
-    "dataTermine": "2025-07-19",
-    "timestamp": "18/07/2025, 18:30"
-  },
-  {
-    "ordine": "8001006",
-    "materiale": "Alluminio 7075",
-    "pezzi": "30",
-    "utente": "Marco",
-    "dataInizio": "2025-07-19",
-    "dataTermine": "2025-07-20",
-    "timestamp": "19/07/2025, 09:15"
+async function aggiornaArchivioGlobale(commessa) {
+  const token = "CamogaToken"; // ⚠️ Inserisci il tuo token qui
+  const owner = "GLKliff";
+  const repo = "camogaQR";
+  const path = "storico.json";
+
+  const headers = {
+    "Authorization": `token ${token}`,
+    "Accept": "application/vnd.github.v3+json"
+  };
+
+  // 1. Recupera il contenuto attuale
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, { headers });
+  const file = await res.json();
+  const sha = file.sha;
+  const content = atob(file.content);
+  const archivio = JSON.parse(content);
+
+  // 2. Aggiungi la nuova commessa
+  archivio.push(commessa);
+  const nuovoContenuto = btoa(JSON.stringify(archivio, null, 2));
+
+  // 3. Invia la richiesta PUT
+  const body = {
+    message: `Aggiornamento archivio con nuova commessa ${commessa.ordine}`,
+    content: nuovoContenuto,
+    sha
+  };
+
+  const updateRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body)
+  });
+
+  if (updateRes.ok) {
+    console.log("✅ Archivio aggiornato con successo!");
+  } else {
+    const err = await updateRes.json();
+    console.error("❌ Errore:", err.message);
   }
-]
+}
+
