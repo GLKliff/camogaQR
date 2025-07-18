@@ -57,7 +57,10 @@
     <div class="campo"><strong>Numero Ordine:</strong> <span id="ordine">--</span></div>
     <div class="campo"><strong>Materiale:</strong> <span id="materiale">--</span></div>
     <div class="campo"><strong>Pezzi:</strong> <span id="pezzi">--</span></div>
-    <div class="campo"><strong>Data:</strong> <span id="timestamp">--</span></div>
+    <div class="campo"><strong>Utente:</strong> <span id="utente">--</span></div>
+    <div class="campo"><strong>Data Inizio:</strong> <span id="dataInizio">--</span></div>
+    <div class="campo"><strong>Data Termine:</strong> <span id="dataTermine">--</span></div>
+    <div class="campo"><strong>Generato il:</strong> <span id="timestamp">--</span></div>
     <div class="qr">
       <img id="qr" src="" alt="QR Code">
     </div>
@@ -68,12 +71,13 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
+
     const ordine = params.get("ordine") || "8001005";
     const materiale = params.get("materiale") || "Acciaio Inox AISI 304";
     const pezzi = params.get("pezzi") || "--";
-
-    const encodedMateriale = encodeURIComponent(materiale);
-    const encodedPezzi = encodeURIComponent(pezzi);
+    const utente = params.get("utente") || "Operatore";
+    const dataInizio = params.get("dataInizio") || "--";
+    const dataTermine = params.get("dataTermine") || "--";
 
     const now = new Date();
     const timestamp = now.toLocaleString('it-IT');
@@ -81,10 +85,13 @@
     document.getElementById("ordine").textContent = ordine;
     document.getElementById("materiale").textContent = materiale;
     document.getElementById("pezzi").textContent = pezzi;
+    document.getElementById("utente").textContent = utente;
+    document.getElementById("dataInizio").textContent = dataInizio;
+    document.getElementById("dataTermine").textContent = dataTermine;
     document.getElementById("timestamp").textContent = timestamp;
 
     const baseUrl = "https://glkliff.github.io/camogaQR/commessa.html";
-    const qrLink = `${baseUrl}?ordine=${ordine}&materiale=${encodedMateriale}&pezzi=${encodedPezzi}`;
+    const qrLink = `${baseUrl}?ordine=${encodeURIComponent(ordine)}&materiale=${encodeURIComponent(materiale)}&pezzi=${encodeURIComponent(pezzi)}&utente=${encodeURIComponent(utente)}&dataInizio=${encodeURIComponent(dataInizio)}&dataTermine=${encodeURIComponent(dataTermine)}`;
 
     document.getElementById("qr").src =
       `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrLink)}`;
