@@ -14,6 +14,16 @@
       text-align: center;
       color: #1e3a5f;
     }
+    #search {
+      width: 100%;
+      max-width: 400px;
+      font-size: 16px;
+      padding: 8px;
+      margin: 10px auto 20px;
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
     .commessa {
       background: #fff;
       border: 1px solid #ccc;
@@ -65,6 +75,7 @@
 </head>
 <body>
   <h2>📁 Archivio Locale delle Commesse</h2>
+  <input type="text" id="search" placeholder="🔍 Cerca per ordine, materiale, utente...">
   <div id="contenitore"></div>
   <div class="bottoni">
     <button class="pulisci" onclick="cancellaTutto()">🧹 Svuota Archivio</button>
@@ -72,18 +83,23 @@
   </div>
 
   <script>
+    let archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
     const contenitore = document.getElementById("contenitore");
+    const searchInput = document.getElementById("search");
 
-    function mostraArchivio() {
-      const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
+    function mostraArchivio(filtro = "") {
       contenitore.innerHTML = "";
+      const filtrati = archivio.filter(c => {
+        const testo = Object.values(c).join(" ").toLowerCase();
+        return testo.includes(filtro.toLowerCase());
+      });
 
-      if (archivio.length === 0) {
-        contenitore.innerHTML = "<div class='vuoto'>Nessuna commessa salvata.</div>";
+      if (filtrati.length === 0) {
+        contenitore.innerHTML = "<div class='vuoto'>Nessuna commessa trovata.</div>";
         return;
       }
 
-      archivio.forEach((c, i) => {
+      filtrati.forEach((c, i) => {
         const blocco = document.createElement("div");
         blocco.className = "commessa";
         blocco.innerHTML = `
@@ -95,28 +111,27 @@
           <div class="campo"><strong>Inizio:</strong> ${c.dataInizio}</div>
           <div class="campo"><strong>Termine:</strong> ${c.dataTermine}</div>
           <div class="campo"><strong>Salvata il:</strong> ${c.timestamp}</div>
-          <button class="elimina" onclick="eliminaCommessa(${i})">🗑️ Elimina</button>
+          <button class="elimina" onclick="eliminaCommessa(${archivio.indexOf(c)})">🗑️ Elimina</button>
         `;
         contenitore.appendChild(blocco);
       });
     }
 
     function eliminaCommessa(indice) {
-      const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
       archivio.splice(indice, 1);
       localStorage.setItem("storicoCommessa", JSON.stringify(archivio));
-      mostraArchivio();
+      mostraArchivio(searchInput.value);
     }
 
     function cancellaTutto() {
       if (confirm("Vuoi davvero cancellare tutto l'archivio?")) {
         localStorage.removeItem("storicoCommessa");
+        archivio = [];
         mostraArchivio();
       }
     }
 
     function esportaCSV() {
-      const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
       if (archivio.length === 0) {
         alert("L'archivio è vuoto.");
         return;
@@ -134,6 +149,10 @@
       link.download = "archivio_commesse.csv";
       link.click();
     }
+
+    searchInput.addEventListener("input", () => {
+      mostraArchivio(searchInput.value);
+    });
 
     mostraArchivio();
   </script>
