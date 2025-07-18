@@ -49,10 +49,25 @@
       text-align: center;
       margin-top: 25px;
     }
+
+    .buttons {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 5px;
+      cursor: pointer;
+    }
   </style>
+
+  <!-- 📄 Libreria per generare PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <div class="etichetta">
+  <div class="etichetta" id="etichetta">
     <h2>Commessa CAMOGA</h2>
     <div class="campo"><strong>Numero Ordine:</strong> <span id="ordine">--</span></div>
     <div class="campo"><strong>Materiale:</strong> <span id="materiale">--</span></div>
@@ -66,6 +81,10 @@
     </div>
     <div class="barcode">
       <img id="barcode" src="" alt="Barcode">
+    </div>
+    <div class="buttons">
+      <button onclick="window.print()">🖨️ Stampa Etichetta</button>
+      <button onclick="generaPDF()">📥 Scarica PDF</button>
     </div>
   </div>
 
@@ -98,6 +117,18 @@
 
     document.getElementById("barcode").src =
       `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
+
+    function generaPDF() {
+      const element = document.getElementById("etichetta");
+      const opt = {
+        margin:       0.5,
+        filename:     `Commessa_${ordine}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
   </script>
 </body>
 </html>
