@@ -39,24 +39,27 @@
       padding: 8px 16px;
       font-size: 14px;
       cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      color: white;
     }
     .elimina {
       background-color: #e74c3c;
-      color: white;
-      border: none;
-      border-radius: 4px;
     }
     .elimina:hover {
       background-color: #c0392b;
     }
     .pulisci {
       background-color: #888;
-      color: white;
-      border: none;
-      border-radius: 4px;
     }
     .pulisci:hover {
       background-color: #666;
+    }
+    .csv {
+      background-color: #3498db;
+    }
+    .csv:hover {
+      background-color: #2980b9;
     }
   </style>
 </head>
@@ -65,13 +68,14 @@
   <div id="contenitore"></div>
   <div class="bottoni">
     <button class="pulisci" onclick="cancellaTutto()">🧹 Svuota Archivio</button>
+    <button class="csv" onclick="esportaCSV()">📤 Esporta CSV</button>
   </div>
 
   <script>
-    const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
     const contenitore = document.getElementById("contenitore");
 
     function mostraArchivio() {
+      const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
       contenitore.innerHTML = "";
 
       if (archivio.length === 0) {
@@ -98,6 +102,7 @@
     }
 
     function eliminaCommessa(indice) {
+      const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
       archivio.splice(indice, 1);
       localStorage.setItem("storicoCommessa", JSON.stringify(archivio));
       mostraArchivio();
@@ -108,6 +113,26 @@
         localStorage.removeItem("storicoCommessa");
         mostraArchivio();
       }
+    }
+
+    function esportaCSV() {
+      const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
+      if (archivio.length === 0) {
+        alert("L'archivio è vuoto.");
+        return;
+      }
+
+      const header = ["Ordine", "Materiale", "Pezzi", "Utente", "Data Inizio", "Data Termine", "Timestamp"];
+      const rows = archivio.map(c => [
+        c.ordine, c.materiale, c.pezzi, c.utente, c.dataInizio, c.dataTermine, c.timestamp
+      ]);
+      const csvContent = [header, ...rows].map(r => r.join(";")).join("\n");
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "archivio_commesse.csv";
+      link.click();
     }
 
     mostraArchivio();
