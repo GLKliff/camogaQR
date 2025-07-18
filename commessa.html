@@ -57,7 +57,7 @@
 
     .buttons button {
       padding: 10px 20px;
-      font-size: 18px;
+      font-size: 16px;
       margin: 5px;
       cursor: pointer;
     }
@@ -71,7 +71,6 @@
     }
   </style>
 
-  <!-- 📄 Libreria per generare PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
@@ -91,22 +90,24 @@
       <img id="barcode" src="" alt="Barcode">
     </div>
     <div class="buttons">
-      <button onclick="window.print()">🖨️ Stampa Etichetta</button>
-      <button onclick="generaPDF()">📥 Scarica PDF</button>
+      <button onclick="window.print()">🖨️ Stampa</button>
+      <button onclick="generaPDF()">📥 PDF</button>
+      <button onclick="condividiWhatsApp()">📲 WhatsApp</button>
+      <button onclick="inviaEmail()">📧 Email</button>
+      <button onclick="salvaInArchivio()">📁 Salva</button>
+      <button onclick="window.open('archivio.html', '_blank')">📜 Archivio</button>
     </div>
     <div id="pdfStatus"></div>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-
     const ordine = params.get("ordine") || "8001005";
     const materiale = params.get("materiale") || "Acciaio Inox AISI 304";
     const pezzi = params.get("pezzi") || "--";
     const utente = params.get("utente") || "Operatore";
     const dataInizio = params.get("dataInizio") || "--";
     const dataTermine = params.get("dataTermine") || "--";
-
     const now = new Date();
     const timestamp = now.toLocaleString('it-IT');
 
@@ -120,30 +121,50 @@
 
     const baseUrl = "https://glkliff.github.io/camogaQR/commessa.html";
     const qrLink = `${baseUrl}?ordine=${encodeURIComponent(ordine)}&materiale=${encodeURIComponent(materiale)}&pezzi=${encodeURIComponent(pezzi)}&utente=${encodeURIComponent(utente)}&dataInizio=${encodeURIComponent(dataInizio)}&dataTermine=${encodeURIComponent(dataTermine)}`;
-
-    document.getElementById("qr").src =
-      `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrLink)}`;
-
-    document.getElementById("barcode").src =
-      `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
+    document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrLink)}`;
+    document.getElementById("barcode").src = `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
 
     function generaPDF() {
       const element = document.getElementById("etichetta");
       const opt = {
-        margin:       0.5,
-        filename:     `Commessa_${ordine}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        margin: 0.5,
+        filename: `Commessa_${ordine}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
-
       html2pdf().set(opt).from(element).save().then(() => {
-        const status = document.getElementById("pdfStatus");
-        status.textContent = "✅ PDF scaricato con successo!";
-        setTimeout(() => {
-          status.textContent = "";
-        }, 4000);
+        mostraMessaggio("✅ PDF scaricato con successo!");
       });
+    }
+
+    function condividiWhatsApp() {
+      const messaggio = `Commessa CAMOGA\nOrdine: ${ordine}\nMateriale: ${materiale}\nPezzi: ${pezzi}\nUtente: ${utente}\nInizio: ${dataInizio}\nTermine: ${dataTermine}`;
+      const url = `https://wa.me/?text=${encodeURIComponent(messaggio)}`;
+      window.open(url, "_blank");
+    }
+
+    function inviaEmail() {
+      const subject = `Commessa CAMOGA - Ordine ${ordine}`;
+      const body = `Commessa CAMOGA\n\nOrdine: ${ordine}\nMateriale: ${materiale}\nPezzi: ${pezzi}\nUtente: ${utente}\nData Inizio: ${dataInizio}\nData Termine: ${dataTermine}`;
+      const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+    }
+
+    function salvaInArchivio() {
+      const commessa = { ordine, materiale, pezzi, utente, dataInizio, dataTermine, timestamp };
+      const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
+      archivio.push(commessa);
+      localStorage.setItem("storicoCommessa", JSON.stringify(archivio));
+      mostraMessaggio("📁 Commessa salvata nell'archivio locale!");
+    }
+
+    function mostraMessaggio(testo) {
+      const status = document.getElementById("pdfStatus");
+      status.textContent = testo;
+      setTimeout(() => {
+        status.textContent = "";
+      }, 4000);
     }
   </script>
 </body>
