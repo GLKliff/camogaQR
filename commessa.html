@@ -61,6 +61,14 @@
       margin: 5px;
       cursor: pointer;
     }
+
+    #pdfStatus {
+      text-align: center;
+      font-size: 16px;
+      color: green;
+      margin-top: 10px;
+      height: 24px;
+    }
   </style>
 
   <!-- 📄 Libreria per generare PDF -->
@@ -86,6 +94,7 @@
       <button onclick="window.print()">🖨️ Stampa Etichetta</button>
       <button onclick="generaPDF()">📥 Scarica PDF</button>
     </div>
+    <div id="pdfStatus"></div>
   </div>
 
   <script>
@@ -127,7 +136,14 @@
         html2canvas:  { scale: 2 },
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
-      html2pdf().set(opt).from(element).save();
+
+      html2pdf().set(opt).from(element).save().then(() => {
+        const status = document.getElementById("pdfStatus");
+        status.textContent = "✅ PDF scaricato con successo!";
+        setTimeout(() => {
+          status.textContent = "";
+        }, 4000);
+      });
     }
   </script>
 </body>
