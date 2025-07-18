@@ -22,4 +22,43 @@
       margin-bottom: 15px;
       box-shadow: 0 0 6px rgba(0,0,0,0.1);
     }
-    .campo
+    .campo {
+      margin-bottom: 8px;
+    }
+    .vuoto {
+      text-align: center;
+      color: #888;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h2>📜 Archivio Commesse Salvate</h2>
+  <div id="contenitore"></div>
+
+  <script>
+    const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
+    const contenitore = document.getElementById("contenitore");
+
+    if (archivio.length === 0) {
+      contenitore.innerHTML = "<div class='vuoto'>Nessuna commessa salvata.</div>";
+    } else {
+      archivio.forEach((c, i) => {
+        const blocco = document.createElement("div");
+        blocco.className = "commessa";
+        blocco.innerHTML = `
+          <div class="campo"><strong>#${i + 1}</strong></div>
+          <div class="campo"><strong>Ordine:</strong> ${c.ordine}</div>
+          <div class="campo"><strong>Materiale:</strong> ${c.materiale}</div>
+          <div class="campo"><strong>Pezzi:</strong> ${c.pezzi}</div>
+          <div class="campo"><strong>Utente:</strong> ${c.utente}</div>
+          <div class="campo"><strong>Inizio:</strong> ${c.dataInizio}</div>
+          <div class="campo"><strong>Termine:</strong> ${c.dataTermine}</div>
+          <div class="campo"><strong>Salvata il:</strong> ${c.timestamp}</div>
+        `;
+        contenitore.appendChild(blocco);
+      });
+    }
+  </script>
+</body>
+</html>
