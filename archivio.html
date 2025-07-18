@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Archivio Commessa</title>
+  <title>Archivio Commessa Globale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -30,55 +30,44 @@
       color: #888;
       margin-top: 40px;
     }
-    button {
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      background-color: #e74c3c;
-      color: white;
-      border: none;
-      border-radius: 4px;
-    }
-    button:hover {
-      background-color: #c0392b;
-    }
   </style>
 </head>
 <body>
-  <h2>📜 Archivio Commesse Salvate</h2>
+  <h2>📜 Archivio Commesse Globali</h2>
   <div id="contenitore"></div>
 
   <script>
-    const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
-    const contenitore = document.getElementById("contenitore");
+    fetch('https://raw.githubusercontent.com/GLKliff/camogaQR/main/storico.json')
+      .then(response => {
+        if (!response.ok) throw new Error("Errore nel caricamento del file JSON");
+        return response.json();
+      })
+      .then(archivio => {
+        const contenitore = document.getElementById("contenitore");
 
-    if (archivio.length === 0) {
-      contenitore.innerHTML = "<div class='vuoto'>Nessuna commessa salvata.</div>";
-    } else {
-      archivio.forEach((c, i) => {
-        const blocco = document.createElement("div");
-        blocco.className = "commessa";
-        blocco.innerHTML = `
-          <div class="campo"><strong>#${i + 1}</strong></div>
-          <div class="campo"><strong>Ordine:</strong> ${c.ordine}</div>
-          <div class="campo"><strong>Materiale:</strong> ${c.materiale}</div>
-          <div class="campo"><strong>Pezzi:</strong> ${c.pezzi}</div>
-          <div class="campo"><strong>Utente:</strong> ${c.utente}</div>
-          <div class="campo"><strong>Inizio:</strong> ${c.dataInizio}</div>
-          <div class="campo"><strong>Termine:</strong> ${c.dataTermine}</div>
-          <div class="campo"><strong>Salvata il:</strong> ${c.timestamp}</div>
-          <button onclick="eliminaCommessa(${i})">🗑️ Elimina</button>
-        `;
-        contenitore.appendChild(blocco);
+        if (archivio.length === 0) {
+          contenitore.innerHTML = "<div class='vuoto'>Nessuna commessa salvata.</div>";
+        } else {
+          archivio.forEach((c, i) => {
+            const blocco = document.createElement("div");
+            blocco.className = "commessa";
+            blocco.innerHTML = `
+              <div class="campo"><strong>#${i + 1}</strong></div>
+              <div class="campo"><strong>Ordine:</strong> ${c.ordine}</div>
+              <div class="campo"><strong>Materiale:</strong> ${c.materiale}</div>
+              <div class="campo"><strong>Pezzi:</strong> ${c.pezzi}</div>
+              <div class="campo"><strong>Utente:</strong> ${c.utente}</div>
+              <div class="campo"><strong>Inizio:</strong> ${c.dataInizio}</div>
+              <div class="campo"><strong>Termine:</strong> ${c.dataTermine}</div>
+              <div class="campo"><strong>Salvata il:</strong> ${c.timestamp}</div>
+            `;
+            contenitore.appendChild(blocco);
+          });
+        }
+      })
+      .catch(error => {
+        document.getElementById("contenitore").innerHTML = `<div class='vuoto'>Errore: ${error.message}</div>`;
       });
-    }
-
-    function eliminaCommessa(indice) {
-      const archivio = JSON.parse(localStorage.getItem("storicoCommessa") || "[]");
-      archivio.splice(indice, 1);
-      localStorage.setItem("storicoCommessa", JSON.stringify(archivio));
-      location.reload();
-    }
   </script>
 </body>
 </html>
