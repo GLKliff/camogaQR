@@ -69,6 +69,33 @@
       margin-top: 10px;
       height: 24px;
     }
+
+    /* 🎯 STAMPA SELETTIVA */
+    @media print {
+      body, html {
+        margin: 0;
+        padding: 0;
+        background: white;
+      }
+
+      .buttons,
+      #pdfStatus {
+        display: none !important;
+      }
+
+      .etichetta {
+        box-shadow: none;
+        border-radius: 0;
+        width: 100%;
+        max-width: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .qr img, .barcode img {
+        max-width: 100%;
+      }
+    }
   </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -121,7 +148,7 @@
 
     const baseUrl = "https://glkliff.github.io/camogaQR/commessa.html";
     const qrLink = `${baseUrl}?ordine=${encodeURIComponent(ordine)}&materiale=${encodeURIComponent(materiale)}&pezzi=${encodeURIComponent(pezzi)}&utente=${encodeURIComponent(utente)}&dataInizio=${encodeURIComponent(dataInizio)}&dataTermine=${encodeURIComponent(dataTermine)}`;
-    document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrLink)}`;
+    document.getElementById("qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrLink}`;
     document.getElementById("barcode").src = `https://barcode.tec-it.com/barcode.ashx?data=${ordine}&code=Code128&dpi=96`;
 
     function generaPDF() {
